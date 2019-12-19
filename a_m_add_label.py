@@ -15,11 +15,29 @@ root = tk.Tk()
 root.title("Account Manager")
 root.geometry("+400+200")
 users = []
+global count
 #################
 
 
+# takes userinfo from entry boxes and displays it
+# def add_info(result_name, result_user, result_pass):
 
-# adds user info to the appropriate label
+#     result_name = name_e.get()
+#     new_name = name_l.cget("text") + result_name
+#     name.set(new_name + "\n")
+
+#     result_user = user_e.get()
+#     new_user = user_l.cget("text") + result_user
+#     user.set(new_user + "\n")
+
+#     result_pass = pass_e.get()
+#     new_pass = pass_l.cget("text") + result_pass
+#     password.set(new_pass + "\n")
+
+    # delete_button = tk.Button(root, text = "X", fg = "red", command = delete_entry)
+    # delete_button.grid(row= 4, column = 3)
+
+
 def add_info(name, user, password, count):
     name_display = tk.Label(root, text = name)
     user_display = tk.Label(root, text = user)
@@ -30,9 +48,21 @@ def add_info(name, user, password, count):
     pass_display.grid(row = (4 + count), column = 2)
 
     print("name,", name)
+# takes the userinfo from get_info_from_file and displays it
+# def add_from_file(result_name, result_user, result_pass):
+#     new_name = name_l.cget("text") + result_name
+#     name.set(new_name + "\n")
+
+#     new_user = user_l.cget("text") + result_user
+#     user.set(new_user + "\n")
+
+#     new_pass = pass_l.cget("text") + result_pass
+#     password.set(new_pass + "\n")
+
+    # delete_button = tk.Button(root, text = "X", fg = "red", command = delete_entry)
+    # delete_button.grid(row= 4, column = 3)
 
 
-# adds userinfo from file ****doesn't need to be here, but might need it later****
 def add_from_file(name, user, password):
     name_display = tk.Label(root, text = name)
     user_display = tk.Label(root, text = user)
@@ -44,13 +74,15 @@ def add_from_file(name, user, password):
 
 
 # on button click, a window pops up asking
-# the user which entry they want to delete ***DOESN'T DO ANYTHING YET***
+# the user which entry they want to delete
 def delete_entry():
     user_info = open("userinfo.txt", "r")
     user_list = []
     count = 0
     for line in user_info:
+        
         entry = str(line) + str(count)
+        
         user_list.append(entry)
         count += 1
     print(user_list)
@@ -60,7 +92,9 @@ def delete_entry():
     entry_show = tk.Label(message, text = user_list)
     entry_show.pack()
     
+    
     # make a counter, make each line of the file a variable, add to list?, add to label
+    
     message.mainloop()
     # tk.messagebox.showinfo("Delete Entry", "Which entry to you want to delete?")
 	
@@ -74,6 +108,7 @@ def get_info_from_file():
     count = 0
     for line in user_info:
         alist = line.split(',')
+        
         name = alist[0]
         user = alist[1]
         password = alist[2]
@@ -89,8 +124,9 @@ def on_submit():
     name = name_e.get()
     user = user_e.get()
     password = pass_e.get()
+    #add_info(name, user, password)
     user_info.write(name + "," + user + "," + password + ",\n" )
-    get_info_from_file()
+    # add_info(name, user, password)	
 
     name_e.delete(0, "end")
     user_e.delete(0, "end")
