@@ -22,21 +22,33 @@ users = []
 
 
 
-
+# adds userinfo to appropriate label with delete button
+# *From File*
 def add_info(name, user, password, count):
     name_display = tk.Label(root, text = name)
     user_display = tk.Label(root, text = user)
     pass_display = tk.Label(root, text = password)
+    delete_button = tk.Button(root, text = "X",fg = "red")
 
+    delete_button.grid(row = (4 + count), column  = 3)
     name_display.grid(row = (4 + count), column = 0)
     user_display.grid(row = (4 + count), column = 1)
     pass_display.grid(row = (4 + count), column = 2)
 
-def add_new():
+# adds userinfo to appropriate label with delete button
+# *From Entry*
+def add_new(name, user, password):
+    f = open("userinfo.txt", "r")
+    count = 0
+    for line in f:
+        count += 1
+    
     name_display = tk.Label(root, text = name)
     user_display = tk.Label(root, text = user)
     pass_display = tk.Label(root, text = password)
+    delete_button = tk.Button(root, text = "X",fg = "red")
 
+    delete_button.grid(row = (4 + count), column  = 3)
     name_display.grid(row = (4 + count), column = 0)
     user_display.grid(row = (4 + count), column = 1)
     pass_display.grid(row = (4 + count), column = 2)
@@ -96,7 +108,7 @@ def on_submit():
     user_info.write(name + "," + user + "," + password + ",\n" )
     # add_info(name, user, password, count)
     # print("count:", count)
-    get_info_from_file()
+    add_new(name, user, password)
     name_e.delete(0, "end")
     user_e.delete(0, "end")
     pass_e.delete(0, "end")
@@ -139,8 +151,8 @@ submit_button = tk.Button(root, font = 40, text = "Submit", bg = "gray", command
 submit_button.grid(row = 1, column= 2, pady = 2)	
 
 # delete button graphic attributes
-delete_button = tk.Button(root, text = "X", fg = "red", command = delete_entry)
-delete_button.grid(row= 2, column = 2)
+# delete_button = tk.Button(root, text = "X", fg = "red", command = delete_entry)
+# delete_button.grid(row= 2, column = 2)
 
 
 ####################
