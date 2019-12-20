@@ -20,7 +20,12 @@ users = []
 
 #################
 
-
+def get_count():
+    f = open("userinfo.txt", "r")
+    count = 0
+    for line in f:
+        count += 1
+    return count
 
 # adds userinfo to appropriate label with delete button
 # *From File*
@@ -39,10 +44,7 @@ def add_info(name, user, password, count):
 # adds userinfo to appropriate label with delete button
 # *From Entry*
 def add_new(name, user, password):
-    f = open("userinfo.txt", "r")
-    count = 0
-    for line in f:
-        count += 1
+    count = get_count()
     
     number_display = tk.Label(root, text = count)
     name_display = tk.Label(root, text = name)
@@ -73,54 +75,59 @@ def delete_entry(i):
         print(alist)
         print(alist[0])
         print("i", i)
-        if str(i + 1) == alist[0]:
-            replace_line("userinfo.txt", i + 1, "")
-            get_info_from_file()
-
+        if str(i) == alist[0]:
+            replace_line("userinfo.txt", i, "")
+            update_info()
+        
 # when "edit" is clicked, creates "delete" buttons next to each entry
-def edit_entry(count):
+def edit_entry():
+    count = get_count()
     
     for i in range(count):
         delete = tk.Button(root, text= "X", fg = "red", command = partial(delete_entry, i))
-        
         delete.grid(row = (4 + int(i)), column = 4)
 
+
+def update_info():
+    f = open("userinfo.txt", "r")
+    for line in f:
+        alist = line.split(',')
+        name = alist[1]
+        user = alist[2]
+        password = alist[3]
+        add_new(name, user, password)
 
 
 # reads the userinfo from the text file and displays it on 
 # the correct labels
 def get_info_from_file():
     user_info = open("userinfo.txt", "r")
-    user_info.readline()
-    global count
+    
     count = 0
     for line in user_info:
-        
         alist = line.split(',')
-        name = alist[0]
-        user = alist[1]
-        password = alist[2]
+        name = alist[1]
+        user = alist[2]
+        password = alist[3]
         add_info(name, user, password, count)
         count +=1
-
+        # print("alist", alist)
 
 # when user clicks "Submit", userinfo is written to a text file and
 # the userinfo entered is displayed
 def on_submit():
-    
+    count = get_count()
     user_info = open("userinfo.txt","a")
     name = name_e.get()
     user = user_e.get()
     password = pass_e.get()
-    user_info.write(name + "," + user + "," + password + ",\n" )
-    # add_info(name, user, password, count)
-    # print("count:", count)
+    user_info.write(str(count) + "," + name + "," + user + "," + password + ",\n" )
     add_new(name, user, password)
     name_e.delete(0, "end")
     user_e.delete(0, "end")
     pass_e.delete(0, "end")
     
-    tk.messagebox.showinfo('Success!','Successfully Added, \n' + 'Name: ' + name + '\nUser: ' + user + '\nPassword: ' + password)
+    # tk.messagebox.showinfo('Success!','Successfully Added, \n' + 'Name: ' + name + '\nUser: ' + user + '\nPassword: ' + password)
 	
 
 
@@ -155,14 +162,14 @@ submit_button = tk.Button(root, font = 40, text = "Submit", bg = "gray", command
 submit_button.grid(row = 1, column= 2, pady = 2)	
 
 # delete button graphic attributes
-edit_button = tk.Button(root, text = "Edit", fg = "red", command = lambda: edit_entry(count))
+edit_button = tk.Button(root, text = "Edit", fg = "red", command = edit_entry)
 edit_button.grid(row= 2, column = 2)
 
 
 ####################
 
 get_info_from_file()
-	
+    
 root.mainloop()
 	
 
